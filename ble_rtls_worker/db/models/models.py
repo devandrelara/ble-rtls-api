@@ -14,8 +14,8 @@ class Area(Base):
     created_at = Column(Date)
 
     def __repr__(self):
-        return "<Area(width='{}', height='{}', floorplan={}, created_at={})>".format(
-            self.width, self.height, self.floorplan, self.created_at
+        return "<Area(id='{}', width='{}', height='{}', floorplan={}, created_at={})>".format(
+            self.id, self.width, self.height, self.floorplan, self.created_at
         )
 
 

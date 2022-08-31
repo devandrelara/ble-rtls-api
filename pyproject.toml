@@ -8,6 +8,7 @@ authors = ["Andre Lara <devandrelara@gmail.com>"]
 python = "^3.10"
 SQLAlchemy = "^1.4.40"
 psycopg2 = "^2.9.3"
+pydantic = "^1.10.0"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"
