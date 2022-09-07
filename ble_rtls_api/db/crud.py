@@ -4,9 +4,9 @@ from sqlalchemy import create_engine
 
 from sqlalchemy.orm import sessionmaker
 
-from ble_rtls_worker.db.config import DATABASE_URI
-from ble_rtls_worker.db.models import models
-from ble_rtls_worker.schemas import schemas
+from ble_rtls_api.db.config import DATABASE_URI
+from ble_rtls_api.db.models import models
+from ble_rtls_api.schemas import schemas
 
 engine = create_engine(DATABASE_URI)
 

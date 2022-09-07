@@ -1,12 +1,12 @@
 from datetime import datetime
 
-from ble_rtls_worker.db.crud import (
+from ble_rtls_api.db.crud import (
     Session,
     create_area,
     create_scanner,
     recreate_database,
 )
-from ble_rtls_worker.schemas.schemas import createArea, createScanner
+from ble_rtls_api.schemas.schemas import createArea, createScanner
 
 
 recreate_database()
