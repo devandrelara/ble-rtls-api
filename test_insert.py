@@ -1,12 +1,12 @@
 from datetime import datetime
 
-from ble_rtls_api.db.crud import (
+from app.db.crud import (
     Session,
     create_area,
     create_scanner,
     recreate_database,
 )
-from ble_rtls_api.schemas.schemas import createArea, createScanner
+from app.schemas.schemas import createArea, Scanner
 
 
 recreate_database()
@@ -20,6 +20,6 @@ newarea = create_area(db=s, area=newArea)
 
 print(newarea)
 
-newscanner = createScanner(name="Scanner0", x_pos=9.1, y_pos=0.2, area=newarea.id)
+newscanner = Scanner(name="Scanner0", x_pos=9.1, y_pos=0.2, area=newarea.id)
 newscaner = create_scanner(db=s, scanner=newscanner)
 print("end")
