@@ -14,6 +14,11 @@ def save_position(db: Session, position: schemas.Position):
     return db_position
 
 
+def get_positions(db: Session):
+    positions = db.query(models.Position).all()
+    return positions
+
+
 def create_area(db: Session, area: schemas.Area):
     db_area = models.Area(
         name=area.name,
@@ -46,7 +51,16 @@ def create_scanner(db: Session, scanner: schemas.Scanner):
 
 def get_scanners(db: Session):
     scanners = db.query(models.Scanner).all()
-    return scanners
+    print([scanner.name for scanner in scanners])
+    return {
+        scanner.name: {
+            "name": scanner.name,
+            "x": scanner.x_pos,
+            "y": scanner.y_pos,
+            "area": scanner.area,
+        }
+        for scanner in scanners
+    }
 
 
 def create_node(db: Session, node: schemas.Node):
@@ -55,6 +69,18 @@ def create_node(db: Session, node: schemas.Node):
     db.commit()
     db.refresh(db_node)
     return db_node
+
+
+def delete_node(db: Session, mac_address: str):
+    db_node = db.query(models.Node).filter_by(mac_address=mac_address)
+    db_node.delete()
+    db.commit()
+
+
+def clear_nodes(db: Session):
+    db_nodes = db.query(models.Node)
+    db_nodes.delete()
+    db.commit()
 
 
 def get_nodes(db: Session):

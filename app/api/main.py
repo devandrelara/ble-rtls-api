@@ -34,6 +34,11 @@ def get_scanners(session: Session = Depends(get_session)):
     return crud.get_scanners(db=session)
 
 
+@app.get("/position/")
+def get_positions(session: Session = Depends(get_session)):
+    return crud.get_positions(db=session)
+
+
 @app.post("/position/", response_model=schemas.Position)
 def save_position(position: schemas.Position, session: Session = Depends(get_session)):
     return crud.save_position(db=session, position=position)
@@ -47,6 +52,16 @@ def create_area(area: schemas.Area, session: Session = Depends(get_session)):
 @app.post("/node/", response_model=schemas.Node)
 def create_node(node: schemas.Node, session: Session = Depends(get_session)):
     return crud.create_node(db=session, node=node)
+
+
+@app.delete("/node/", status_code=204)
+def clear_nodes(session: Session = Depends(get_session)):
+    return crud.clear_nodes(db=session)
+
+
+@app.delete("/node/{mac_address}", status_code=204)
+def delete_node(mac_address: str, session: Session = Depends(get_session)):
+    return crud.delete_node(mac_address=mac_address, db=session)
 
 
 @app.post("/scanner/", response_model=schemas.Scanner)
