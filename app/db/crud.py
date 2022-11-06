@@ -19,6 +19,22 @@ def get_positions(db: Session):
     return positions
 
 
+def get_latest_position_for_node(db: Session, node_id: int):
+    position = (
+        db.query(models.Position)
+        .filter_by(node=node_id)
+        .order_by(models.Position.id.desc())
+        .first()
+    )
+    return position
+
+
+def clear_positions(db: Session):
+    db_positions = db.query(models.Position)
+    db_positions.delete()
+    db.commit()
+
+
 def create_area(db: Session, area: schemas.Area):
     db_area = models.Area(
         name=area.name,
@@ -34,9 +50,33 @@ def create_area(db: Session, area: schemas.Area):
     return db_area
 
 
+def update_area(area: schemas.AreaUpdate, area_id: int, db: Session):
+    db_area = db.get(models.Area, area_id)
+    area_data = area.dict(exclude_unset=True)
+
+    for key, value in area_data.items():
+        setattr(db_area, key, value)
+    db.add(db_area)
+    db.commit()
+    db.refresh(db_area)
+    return db_area
+
+
 def get_areas(db: Session):
     areas = db.query(models.Area).all()
     return areas
+
+
+def get_area_by_id(area_id: int, db: Session):
+    print(area_id)
+    db_area = db.get(models.Area, area_id)
+    return db_area
+
+
+def delete_area(db: Session, area_id: str):
+    db_area = db.query(models.Area).filter_by(id=area_id)
+    db_area.delete()
+    db.commit()
 
 
 def create_scanner(db: Session, scanner: schemas.Scanner):
@@ -51,9 +91,9 @@ def create_scanner(db: Session, scanner: schemas.Scanner):
 
 def get_scanners(db: Session):
     scanners = db.query(models.Scanner).all()
-    print([scanner.name for scanner in scanners])
     return {
         scanner.name: {
+            "id": scanner.id,
             "name": scanner.name,
             "x": scanner.x_pos,
             "y": scanner.y_pos,
@@ -61,6 +101,24 @@ def get_scanners(db: Session):
         }
         for scanner in scanners
     }
+
+
+def get_scanners_by_area(area_id: int, db: Session):
+    scanners = db.query(models.Scanner).filter(models.Scanner.area == area_id).all()
+    return scanners
+
+
+def update_scanner(scanner: schemas.ScannerUpdate, scanner_id: int, db: Session):
+    db_scanner = db.get(models.Scanner, scanner_id)
+    scanner_data = scanner.dict(exclude_unset=True)
+    print(scanner_data)
+    print(scanner_id)
+    for key, value in scanner_data.items():
+        setattr(db_scanner, key, value)
+    db.add(db_scanner)
+    db.commit()
+    db.refresh(db_scanner)
+    return db_scanner
 
 
 def create_node(db: Session, node: schemas.Node):

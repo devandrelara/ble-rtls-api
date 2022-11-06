@@ -1,5 +1,14 @@
+from operator import index
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import Column, Float, Integer, String, Date, ForeignKey
+from sqlalchemy import (
+    Column,
+    UniqueConstraint,
+    Float,
+    Integer,
+    String,
+    Date,
+    ForeignKey,
+)
 
 Base = declarative_base()
 
@@ -37,6 +46,7 @@ class Node(Base):
 
 class Position(Base):
     __tablename__ = "positions"
+
     id = Column(Integer, primary_key=True)
     area = Column(Integer, ForeignKey("areas.id"))
     node = Column(Integer, ForeignKey("nodes.id"))
